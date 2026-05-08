@@ -26,6 +26,12 @@ Run the `build.sh` script to fetch the latest version and build the Docker image
 ./build.sh
 ```
 
+To automatically push the image to the registry after a successful build, pass any argument to the script:
+
+```bash
+./build.sh push
+```
+
 ### Running the CLI
 Once built, you can run the CLI inside a container:
 

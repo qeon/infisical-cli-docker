@@ -3,6 +3,7 @@ SCRIPT_DIR="$( dirname -- "$( readlink -f -- "$0" )" )"
 
 LATEST_RELEASE_URL=https://api.github.com/repos/infisical/cli/releases/latest
 IMAGE_REPO=ghcr.io/qeon/infisical-cli
+PUSH_IMAGE="$1"
 
 # we assume docker has been ready to do stuffs.
 REQUIRED_BINS=( curl jq )
@@ -30,5 +31,10 @@ if [ "$?" -ne "0" ]; then
         -t "${IMAGE_REPO}:${LATEST_RELEASE}" \
         --label "org.opencontainers.image.version=${LATEST_RELEASE}" \
         .
+    RET=$?
+    if [ "$RET" -eq "0" ] && [ -n "$PUSH_IMAGE" ]; then
+        docker push --all-tags "${IMAGE_REPO}"
+    fi
+    exit $RET
 fi
 exit 0
