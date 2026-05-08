@@ -5,16 +5,17 @@ on:
   workflow_dispatch:
 
 jobs:
-  runs-on: ubuntu-latest
-  permissions:
-    packages: write
-  steps:
-    - uses: actions/checkout@v6
-      with:
-        ref: main
-    - name: Login to Github Container Registry
-      run: |
-        echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
-    - name: Build and publish image
-      run: |
-        /bin/bash build.sh push
+  build-publish:
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: main
+      - name: Login to Github Container Registry
+        run: |
+          echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+      - name: Build and publish image
+        run: |
+          /bin/bash build.sh push
